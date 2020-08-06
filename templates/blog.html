@@ -1,0 +1,125 @@
+{% extends 'base.html'%}
+
+
+{% block content %}
+
+{% load static %}
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <!-- Blog Entries Column -->
+      <div class="col-md-8 py-4">
+
+        
+    {%for post in allpost%}
+        <!-- Blog Post -->
+        <div class="card mb-4">
+        <div class="card-header">
+                    
+           <p><i class="fa fa-user-circle-o" aria-hidden="true"></i> <strong>{{post.author}}</strong><span class="float-right">{{post.views}} Views</span></p>
+           
+           
+          </div>
+          <img class="card-img-top" src="{{post.image.url}}" alt="static/{{post.image.url}}">
+          <div class="card-body">
+            <h2 class="card-title">{{post.title}}</h2>
+            <p class="card-text " style="text-align:justify"> {{post.content |safe| truncatechars:500}}</p>
+            <a href="{{post.slug}}" class="btn btn-primary">Read More &rarr;</a>
+          </div>
+          <div class="card-header">
+          <p>Posted Date : {{post.timestamp.date}}</p>
+           </div>  
+        </div>
+    {% endfor %}
+       
+   
+ <div class="form-group">
+  <label for="comment">Comment:</label>
+  <textarea class="form-control" rows="5" id="comment"></textarea>
+  </div>
+       
+
+           <!-- Pagination -->
+
+      </div>
+    
+ <!-- Categories Widget -->
+<div class="col-md4">
+
+<div class="card my-4">
+  <h5 class="card-header">Search</h5>
+      <div class="card-body">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search for...">
+            <span class="input-group-append">
+              <button class="btn btn-secondary" type="button">Go!</button>
+            </span>
+          </div>
+      </div>
+</div>
+
+       
+<div class="card my-4" style="width: 18rem;">
+{%for post in category%}
+  
+  <div class="card-body">
+    <h5 class="card-title">Category</h5>
+    <p class="card-text">{{ post.category }}</p>
+    
+  </div>
+{%endfor%}  
+</div>
+
+<div class="card my-4" style="width: 18rem;">
+<h5 class="card-title m-2"> Recent Post</h5>
+{%for post in allpost%}
+
+<a href="{{post.slug}}">  <img class="card-img-top my-2" src="{{post.image.url}}" alt="Card image cap"></a>
+  
+{%endfor%}  
+</div>
+</div>
+
+
+
+
+
+      
+    </div>
+    <!-- /.row -->
+  {% if allpost.has_other_pages %}
+
+     <ul class="pagination justify-content-center mb-4">
+        
+       {% if allpost.has_previous %}
+      <li class="page-item">
+        
+         <a class="page-link" href="?page={{ allpost.previous_page_number }}">&larr; Older</a>
+        
+          </li>
+    {% else %}
+    <li class="page-item">  <a class="page-link" href="{% url 'blog' %}">&larr; Older</a></li>
+    {% endif %}
+    
+
+    
+    
+    {% if allpost.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ allpost.next_page_number }}">Next</a></li>
+    {% else %}
+      <li class="disabled page-item"><a class="page-link">>Next</a></li>
+    {% endif %}
+    
+    </ul>
+
+{% endif %}
+
+
+
+  </div>
+  <!-- /.container -->
+{% endblock content %}
+
+
